@@ -68,7 +68,7 @@ export default function Home() {
     );
   };
 
-  const downloadData = (data: any[]) => {
+  const downloadData = (data: unknown[]) => {
     if (data.length !== 0) {
       const resArr = JSON.stringify(data);
       const blob = new Blob([resArr], { type: "text/plain" });
