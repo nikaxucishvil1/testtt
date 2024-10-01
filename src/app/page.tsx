@@ -68,7 +68,7 @@ export default function Home() {
     );
   };
 
-  const downloadData = (data: unknown[]) => {
+  const downloadData = (data: any[]) => {
     if (data.length !== 0) {
       const resArr = JSON.stringify(data);
       const blob = new Blob([resArr], { type: "text/plain" });
@@ -130,60 +130,64 @@ export default function Home() {
         onReorder={setTodos}
         className="w-full flex-col flex items-center justify-center"
       >
-        {todos.map((todo, index) => (
-          <Reorder.Item
-            key={todo.id}
-            style={{ backgroundColor: todo.bg }}
-            className="p-2 flex flex-col gap-3 w-[70%]"
-            value={todo}
-          >
-            <input
-              type="text"
-              placeholder="Enter task"
-              value={inputValues[todo.id] || ""}
-              onChange={(e) => handleChange(e, todo.id)}
-              className="p-4"
-            />
-            <button
-              className="bg-black text-white rounded-xl p-4"
-              onClick={() => handleSubmit(todo.id)}
+        {todos &&
+          todos.length > 0 &&
+          todos.map((todo, index) => (
+            <Reorder.Item
+              key={todo.id}
+              style={{ backgroundColor: todo.bg }}
+              className="p-2 flex flex-col gap-3 w-[70%]"
+              value={todo}
             >
-              Add task
-            </button>
-
-            <div className="flex w-full items-center justify-around">
+              <input
+                type="text"
+                placeholder="Enter task"
+                value={inputValues[todo.id] || ""}
+                onChange={(e) => handleChange(e, todo.id)}
+                className="p-4"
+              />
               <button
-                className="text-white bg-black rounded-xl p-4"
-                onClick={() => {
-                  downloadData(todo.content);
-                }}
+                className="bg-black text-white rounded-xl p-4"
+                onClick={() => handleSubmit(todo.id)}
               >
-                download todo
+                Add task
               </button>
-              <button
-                className="text-white bg-black rounded-xl p-4"
-                onClick={() => handleDeleteTodo(index)}
-              >
-                delete todo
-              </button>
-            </div>
 
-            <div className="flex gap-2 flex-wrap">
-              {todo.content.map((task, taskIndex) => (
-                <div
-                  key={taskIndex}
-                  className="bg-black text-white w-[30%] flex items-center justify-between p-2 mt-2"
+              <div className="flex w-full items-center justify-around">
+                <button
+                  className="text-white bg-black rounded-xl p-4"
+                  onClick={() => {
+                    downloadData(todo.content);
+                  }}
                 >
-                  <input type="checkbox" />
-                  <span>{task}</span>
-                  <button onClick={() => handleDeleteTask(todo.id, taskIndex)}>
-                    Delete
-                  </button>
-                </div>
-              ))}
-            </div>
-          </Reorder.Item>
-        ))}
+                  download todo
+                </button>
+                <button
+                  className="text-white bg-black rounded-xl p-4"
+                  onClick={() => handleDeleteTodo(index)}
+                >
+                  delete todo
+                </button>
+              </div>
+
+              <div className="flex gap-2 flex-wrap">
+                {todo.content.map((task, taskIndex) => (
+                  <div
+                    key={taskIndex}
+                    className="bg-black text-white w-[30%] flex items-center justify-between p-2 mt-2"
+                  >
+                    <input type="checkbox" />
+                    <span>{task}</span>
+                    <button
+                      onClick={() => handleDeleteTask(todo.id, taskIndex)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </Reorder.Item>
+          ))}
       </Reorder.Group>
     </div>
   );
